@@ -12,6 +12,10 @@ export default function useUser() {
       const data = ourplaylist
         .login({ username, password })
         .then((user) => {
+          window.sessionStorage.setItem(
+            "OURPLAYLIST_TOKEN",
+            JSON.stringify(user)
+          )
           setUser(user)
         })
         .catch((err) => {
@@ -22,10 +26,16 @@ export default function useUser() {
     [setUser]
   )
 
+  const logout = useCallback(() => {
+    window.sessionStorage.removeItem("OURPLAYLIST_TOKEN")
+    setUser(null)
+  }, [setUser])
+
   return {
     error: state.error,
     isLogged: Boolean(user),
     loading: state.loading,
     login,
+    logout,
   }
 }

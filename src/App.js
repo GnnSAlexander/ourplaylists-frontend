@@ -6,16 +6,25 @@ import { Home } from "./page/home"
 import { Video } from "./page/video"
 import LoginPage from "./page/login"
 import { UserContextProvider } from "./context/UserContext"
+import PublicRoute from "./routes/PublicRoute"
+import ROUTES from "./routes/ROUTES"
+import PrivateRoute from "./routes/PrivateRoute"
+import { Dashboard } from "./page/dashboard"
 
 function App() {
-  console.log(process.env)
   return (
     <UserContextProvider>
       <Router>
         <div className="App">
           <Switch>
-            <Route exact path="/" children={<LoginPage />} />
-            <Route exact path="/home" children={<Home />} />
+            <PublicRoute exact path={ROUTES.HOME} component={Home} />
+            <PublicRoute exact path={ROUTES.LOGIN} component={LoginPage} />
+            <PrivateRoute
+              exact
+              restricted
+              path={ROUTES.DASHBOARD}
+              component={Dashboard}
+            />
             <Route path="/video/:id" children={<Video />} />
           </Switch>
         </div>

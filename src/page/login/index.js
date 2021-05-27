@@ -82,7 +82,7 @@ export default function LoginPage() {
       enqueueSnackbar("success", {
         variant: "success",
       })
-      history.push("/home")
+      history.push("/dashboard")
     }
   }, [isLogged])
 
