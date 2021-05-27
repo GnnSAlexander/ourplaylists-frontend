@@ -4,11 +4,14 @@ import "./index.css"
 import App from "./App"
 import reportWebVitals from "./reportWebVitals"
 import { Theme } from "./theme"
+import { SnackbarProvider } from "notistack"
 
 ReactDOM.render(
   <React.StrictMode>
     <Theme>
-      <App />
+      <SnackbarProvider maxSnack={3}>
+        <App />
+      </SnackbarProvider>
     </Theme>
   </React.StrictMode>,
   document.getElementById("root")

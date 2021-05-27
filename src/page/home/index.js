@@ -1,9 +1,18 @@
 import { Grid, Typography } from "@material-ui/core"
-import React from "react"
+import React, { useEffect } from "react"
+import { useHistory } from "react-router"
 import { Header } from "../../components/header"
 import { SearchVideo } from "../../components/searchVideo"
+import useUser from "../../hooks/useUser"
 
 export const Home = () => {
+  const { isLogged } = useUser()
+
+  const history = useHistory()
+
+  useEffect(() => {
+    !isLogged && history.push("/")
+  }, [])
   return (
     <div>
       <Header />
