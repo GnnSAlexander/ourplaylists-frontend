@@ -48,6 +48,10 @@ export const LoginButton = () => {
     setOpen(null)
   }
 
+  const handleDashboard = () => {
+    history.push(ROUTES.DASHBOARD)
+  }
+
   return (
     <>
       {isLogged ? (
@@ -66,6 +70,7 @@ export const LoginButton = () => {
             open={Boolean(open)}
             onClose={handleClose}
           >
+            <MenuItem onClick={handleDashboard}>My Dashboard</MenuItem>
             <MenuItem onClick={handleLogOut}>Logout</MenuItem>
           </Menu>
         </div>
