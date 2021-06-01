@@ -7,13 +7,11 @@ import { Theme } from "./theme"
 import { SnackbarProvider } from "notistack"
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Theme>
-      <SnackbarProvider maxSnack={3}>
-        <App />
-      </SnackbarProvider>
-    </Theme>
-  </React.StrictMode>,
+  <Theme>
+    <SnackbarProvider maxSnack={3}>
+      <App />
+    </SnackbarProvider>
+  </Theme>,
   document.getElementById("root")
 )
 

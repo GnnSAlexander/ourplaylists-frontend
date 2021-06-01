@@ -1,24 +1,45 @@
-import { Avatar, Button, Grid, Menu, MenuItem } from "@material-ui/core"
-import React, { useContext, useEffect } from "react"
-import { Link, useHistory } from "react-router-dom"
-import useUser from "../../hooks/useUser"
+import {
+  AppBar,
+  IconButton,
+  makeStyles,
+  Toolbar,
+  Typography,
+} from "@material-ui/core"
+import MenuIcon from "@material-ui/icons/Menu"
+import React from "react"
 import logo from "../../logo.svg"
 import { LoginButton } from "../loginButton"
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
+  },
+}))
+
 export const Header = () => {
+  const classes = useStyles()
   return (
-    <header className="App-header">
-      <Grid container alignItems="center" justify="flex-end">
-        <Grid item xs={4}></Grid>
-        <Grid item xs={4}>
-          <Link to="/">
-            <img src={logo} className="App-logo" alt="logo" />
-          </Link>
-        </Grid>
-        <Grid item xs={4}>
-          <LoginButton />
-        </Grid>
-      </Grid>
-    </header>
+    <AppBar position="static">
+      <Toolbar>
+        <IconButton
+          edge="start"
+          className={classes.menuButton}
+          color="inherit"
+          aria-label="menu"
+        >
+          <MenuIcon />
+        </IconButton>
+        <Typography variant="h6" className={classes.title}>
+          OurPlaylists
+        </Typography>
+        <LoginButton />
+      </Toolbar>
+    </AppBar>
   )
 }

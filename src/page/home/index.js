@@ -1,9 +1,7 @@
 import { Grid, Typography } from "@material-ui/core"
-import React, { useEffect } from "react"
-import { useHistory } from "react-router"
+import React from "react"
 import { Header } from "../../components/header"
-import { SearchVideo } from "../../components/searchVideo"
-import useUser from "../../hooks/useUser"
+import { ListPlaylist } from "../../components/ListPlaylist"
 
 export const Home = () => {
   return (
@@ -11,9 +9,9 @@ export const Home = () => {
       <Header />
       <div style={{ margin: 5 }}>
         <Grid container spacing={1}>
-          <Typography variant="h1">HomePage</Typography>
+          <Typography variant="h1">Playlists</Typography>
           <Grid item xs={12}>
-            <SearchVideo />
+            <ListPlaylist />
           </Grid>
         </Grid>
       </div>
