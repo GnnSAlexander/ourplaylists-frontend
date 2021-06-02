@@ -7,7 +7,11 @@ const PrivateRoute = ({ component: Component, restricted, ...rest }) => {
   // restricted = true meaning restricted route
   const { isLogged } = useUser()
   console.log(isLogged)
-  return <Route {...rest} render={(props) => <Component {...props} />} />
+  return isLogged ? (
+    <Route {...rest} render={(props) => <Component {...props} />} />
+  ) : (
+    <Redirect to={ROUTES.LOGIN} />
+  )
 }
 
 export default PrivateRoute

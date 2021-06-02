@@ -13,7 +13,6 @@ export const Dashboard = () => {
 
   return (
     <div>
-      <Header />
       <div style={{ margin: 5 }}>
         <Grid container justify="center" spacing={1}>
           <Grid item md={12} xs={12}>

@@ -3,6 +3,7 @@ const ROUTES = {
   LOGIN: "/login",
   VIDEO: "/video",
   DASHBOARD: "/dashboard",
+  PLAYLIST: "/playlist/",
 }
 
 export default ROUTES

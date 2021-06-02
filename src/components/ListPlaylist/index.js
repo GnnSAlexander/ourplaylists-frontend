@@ -1,5 +1,6 @@
 import {
   Avatar,
+  IconButton,
   List,
   ListItem,
   ListItemAvatar,
@@ -12,6 +13,9 @@ import usePlaylist from "../../hooks/usePlaylist"
 import { Loading } from "../Loading"
 
 import playlist_default from "./playlist-default.jpeg"
+import PlaylistPlayIcon from "@material-ui/icons/PlaylistPlay"
+import { useHistory } from "react-router"
+import ROUTES from "../../routes/ROUTES"
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -27,15 +31,27 @@ export const ListPlaylist = ({ listUpdated }) => {
   const classes = useStyles()
   const { state } = usePlaylist({ listUpdated })
   const { data: playlist } = state
+
+  const history = useHistory()
   if (state.loading) {
     return <Loading />
+  }
+
+  const navigate = (id) => {
+    history.push(ROUTES.PLAYLIST + id)
   }
 
   if (playlist) {
     return (
       <List>
         {playlist.map((p) => (
-          <ListItem key={p.id} button>
+          <ListItem
+            key={p.id}
+            button
+            onClick={() => {
+              navigate(p.id)
+            }}
+          >
             <ListItemAvatar>
               <Avatar
                 variant="square"
@@ -51,7 +67,11 @@ export const ListPlaylist = ({ listUpdated }) => {
                 p.date_added
               ).toLocaleDateString()}`}
             />
-            <ListItemSecondaryAction></ListItemSecondaryAction>
+            <ListItemSecondaryAction>
+              <IconButton aria-label="Play" color="secondary">
+                <PlaylistPlayIcon fontSize="large" />
+              </IconButton>
+            </ListItemSecondaryAction>
           </ListItem>
         ))}
         {playlist.length === 0 && <h1>No hay playlist</h1>}

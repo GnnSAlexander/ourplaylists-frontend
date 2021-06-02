@@ -30,9 +30,11 @@ const ourplaylist = {
     return myHeaders
   },
 
-  getPlaylist() {
+  getPlaylist(id) {
     const headers = this.getToken()
-    return fetch(BASE_URL + VERSION + "/playlist", {
+    const path = BASE_URL + VERSION + "/playlist/"
+    const url = id ? path + id : path
+    return fetch(url, {
       headers,
     })
       .then((res) => {
