@@ -6,7 +6,6 @@ import { ListPlaylist } from "../../components/ListPlaylist"
 export const Home = () => {
   return (
     <div>
-      <Header />
       <div style={{ margin: 5 }}>
         <Grid container spacing={1}>
           <Typography variant="h1">Playlists</Typography>
