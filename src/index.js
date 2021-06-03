@@ -8,7 +8,7 @@ import { SnackbarProvider } from "notistack"
 
 ReactDOM.render(
   <Theme>
-    <SnackbarProvider maxSnack={3}>
+    <SnackbarProvider maxSnack={3} hideIconVariant={false}>
       <App />
     </SnackbarProvider>
   </Theme>,

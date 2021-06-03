@@ -63,6 +63,43 @@ const ourplaylist = {
         throw new Error(error)
       })
   },
+
+  addSong(data) {
+    const headers = this.getToken()
+    return fetch(BASE_URL + VERSION + "/song", {
+      method: "POST",
+      headers,
+      body: JSON.stringify(data),
+    })
+      .then((res) => {
+        return res.json()
+      })
+      .then((res) => {
+        return res
+      })
+      .catch((error) => {
+        throw new Error(error)
+      })
+  },
+
+  deleteSong(id) {
+    const headers = this.getToken()
+    return fetch(BASE_URL + VERSION + "/song/" + id, {
+      method: "DELETE",
+      headers,
+    })
+      .then((res) => {
+        if (res.status === 204) {
+          return { success: "true" }
+        }
+      })
+      .then((res) => {
+        return res
+      })
+      .catch((error) => {
+        throw new Error(error)
+      })
+  },
 }
 
 export default ourplaylist
