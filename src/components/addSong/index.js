@@ -1,8 +1,6 @@
-import React from "react"
+import React, { useCallback } from "react"
 import { makeStyles } from "@material-ui/core/styles"
-import Fab from "@material-ui/core/Fab"
-import AddIcon from "@material-ui/icons/Add"
-import Button from "@material-ui/core/Button"
+import QueueMusicIcon from "@material-ui/icons/QueueMusic"
 import Dialog from "@material-ui/core/Dialog"
 import AppBar from "@material-ui/core/AppBar"
 import Toolbar from "@material-ui/core/Toolbar"
@@ -10,15 +8,11 @@ import IconButton from "@material-ui/core/IconButton"
 import Typography from "@material-ui/core/Typography"
 import CloseIcon from "@material-ui/icons/Close"
 import Slide from "@material-ui/core/Slide"
-import {
-  Checkbox,
-  DialogContent,
-  FormControlLabel,
-  Grid,
-  TextField,
-} from "@material-ui/core"
+import { DialogContent, Grid } from "@material-ui/core"
 import ourplaylist from "../../services/ourplaylist"
 import { useSnackbar } from "notistack"
+import { SearchVideo } from "../searchVideo"
+import { useHistory } from "react-router"
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -42,29 +36,28 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />
 })
 
-const initialState = {
-  title: "",
-  image: "",
-  isPublic: true,
-}
-
-export default function AddSong() {
+export default function AddSong({ playlist_title, reloadSongs }) {
   const classes = useStyles()
   const [open, setOpen] = React.useState(false)
-  const [formvalues, setFormvalues] = React.useState(initialState)
+  const history = useHistory()
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
-  const handleInputChange = (event) => {
-    const elem = event
-
-    switch (event.target.type) {
-      default:
-        throw new Error("No esta configurado")
-    }
-  }
-
-  const handleSubmit = () => {}
+  const handleSubmit = useCallback(
+    (song) => {
+      ourplaylist
+        .addSong(song)
+        .then((res) => {
+          if (res?.error) {
+            enqueueSnackbar(res.error, { variant: "error" })
+            return
+          }
+          enqueueSnackbar(`${song.title} was added`, { variant: "success" })
+        })
+        .catch((error) => enqueueSnackbar(error, { variant: "error" }))
+    },
+    [enqueueSnackbar]
+  )
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -72,18 +65,19 @@ export default function AddSong() {
 
   const handleClose = () => {
     setOpen(false)
+    reloadSongs({})
   }
 
   return (
     <div>
-      <Fab
+      <IconButton
+        aria-label="Add song"
         color="primary"
-        className={classes.fab}
-        aria-label="add"
         onClick={handleClickOpen}
       >
-        <AddIcon />
-      </Fab>
+        <QueueMusicIcon fontSize="large" color="secondary" />
+      </IconButton>
+
       <Dialog
         fullScreen
         open={open}
@@ -101,50 +95,13 @@ export default function AddSong() {
               <CloseIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-              Create Playlist
+              Add Songs in {playlist_title} playlist
             </Typography>
-            <Button type="" autoFocus color="inherit" onClick={handleSubmit}>
-              save
-            </Button>
           </Toolbar>
         </AppBar>
         <DialogContent className={classes.dialogContent}>
           <Grid container spacing={2}>
-            <Grid item md={12}>
-              <TextField
-                id="title"
-                label="Title"
-                value={formvalues.title}
-                name="title"
-                onChange={handleInputChange}
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-            <Grid item md={12}>
-              <TextField
-                id="image"
-                label="Image src"
-                value={formvalues.image}
-                onChange={handleInputChange}
-                name="image"
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-            <Grid item md={12}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    value={formvalues.isPublic}
-                    onChange={handleInputChange}
-                    name="isPublic"
-                  />
-                }
-                label="Is Public"
-                labelPlacement="start"
-              />
-            </Grid>
+            <SearchVideo addSong={handleSubmit} />
           </Grid>
         </DialogContent>
       </Dialog>

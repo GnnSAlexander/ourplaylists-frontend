@@ -8,6 +8,8 @@ export default function usePlaylist({ id, listUpdated }) {
     error: false,
   })
 
+  const [refetch, setRefetch] = useState({})
+
   useEffect(() => {
     setState({ ...state, loading: true })
     const getPlaylist = async () => {
@@ -21,9 +23,10 @@ export default function usePlaylist({ id, listUpdated }) {
     }
 
     getPlaylist()
-  }, [listUpdated])
+  }, [listUpdated, refetch])
 
   return {
     state,
+    setRefetch,
   }
 }

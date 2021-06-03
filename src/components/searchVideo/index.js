@@ -1,17 +1,9 @@
 import React from "react"
 import { useState, useEffect } from "react"
-import {
-  Avatar,
-  Button,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  TextField,
-} from "@material-ui/core"
+import { Button, Grid, TextField } from "@material-ui/core"
 import { VideoList } from "../VideoList"
 
-export const SearchVideo = () => {
+export const SearchVideo = ({ addSong }) => {
   const [search, setSearch] = useState("")
   const [loading, setLoading] = useState(false)
   const [list, setList] = useState([])
@@ -46,6 +38,7 @@ export const SearchVideo = () => {
       const response = await window.gapi.client.youtube.search.list({
         q,
         part: "snippet",
+        maxResults: 15,
       })
       console.log(response.result)
       setList(response.result.items)
@@ -54,18 +47,27 @@ export const SearchVideo = () => {
     }
   }
   return (
-    <>
-      <form onSubmit={(e) => handleSubmit(e)}>
-        <TextField
-          name={search}
-          placeholder="Search video"
-          onChange={(event) => setSearch(event.currentTarget.value)}
-        />
-        <Button variant="contained" color="primary" type="submit">
-          Search
-        </Button>
+    <Grid container item md={12} justify="center">
+      <form onSubmit={(e) => handleSubmit(e)} style={{ width: "100%" }}>
+        <Grid container justify="center" alignItems="center" item md={12}>
+          <Grid item xs={10} md={5}>
+            <TextField
+              name={search}
+              placeholder="Search video"
+              onChange={(event) => setSearch(event.currentTarget.value)}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={2} md={1}>
+            <Button variant="contained" color="primary" type="submit" fullWidth>
+              Search
+            </Button>
+          </Grid>
+        </Grid>
       </form>
-      <VideoList list={list} loading={loading} />
-    </>
+      <Grid item md={6}>
+        <VideoList list={list} loading={loading} addSong={addSong} />
+      </Grid>
+    </Grid>
   )
 }

@@ -1,48 +1,88 @@
 import React from "react"
 import {
   Avatar,
+  IconButton,
   List,
   ListItem,
   ListItemAvatar,
+  ListItemSecondaryAction,
   ListItemText,
+  makeStyles,
 } from "@material-ui/core"
-import { useHistory } from "react-router"
+import { useHistory, useParams } from "react-router"
+import AddIcon from "@material-ui/icons/Add"
+import { Loading } from "../Loading"
 
-export const VideoList = ({ list, loading }) => {
+const useStyles = makeStyles((theme) => ({
+  large: {
+    width: theme.spacing(15),
+    height: theme.spacing(15),
+  },
+  medium: {
+    width: theme.spacing(10),
+    height: theme.spacing(10),
+  },
+  paddingZero: {
+    padding: 0,
+  },
+}))
+
+export const VideoList = ({ list, loading, addSong }) => {
+  const classes = useStyles()
   const history = useHistory()
+  const { id } = useParams()
 
   const handleClick = (data) => {
     const pathName = "/video/" + data.id.videoId
     history.push(pathName, { data })
   }
+
+  if (loading) {
+    return <Loading />
+  }
+
   return (
     <>
       <List>
-        {loading && (
-          <ListItem>
-            <ListItemText>Loading...</ListItemText>
-          </ListItem>
-        )}
-
-        {!loading &&
-          list.map((item) => {
-            const { videoId } = item.id
-            const { thumbnails, title } = item.snippet
-            return (
-              <ListItem
-                style={{ cursor: "pointer" }}
-                key={videoId}
-                onClick={() => handleClick(item)}
-              >
-                <ListItemAvatar>
-                  <Avatar>
-                    <img src={thumbnails.default.url} />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText>{title}</ListItemText>
-              </ListItem>
-            )
-          })}
+        {list.map((item) => {
+          const { videoId } = item.id
+          const { thumbnails, title } = item.snippet
+          return (
+            <ListItem
+              className={classes.paddingZero}
+              style={{ cursor: "pointer" }}
+              key={videoId}
+              onClick={() => handleClick(item)}
+            >
+              <ListItemAvatar>
+                <Avatar
+                  variant="square"
+                  className={classes.medium}
+                  alt={title}
+                  src={thumbnails.default.url}
+                ></Avatar>
+              </ListItemAvatar>
+              <ListItemText>{title}</ListItemText>
+              <ListItemSecondaryAction>
+                <IconButton
+                  aria-label="Play"
+                  color="secondary"
+                  onClick={() =>
+                    addSong({
+                      title,
+                      song_id: videoId,
+                      picture: thumbnails.default.url,
+                      type: "youtube",
+                      playlistId: id,
+                    })
+                  }
+                >
+                  <AddIcon fontSize="large" />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+          )
+        })}
       </List>
     </>
   )

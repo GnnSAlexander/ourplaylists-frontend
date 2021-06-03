@@ -7,6 +7,7 @@ const useStyles = makeStyles((theme) => ({
     top: 0,
     right: 0,
     width: "100%",
+    zIndex: 99999,
     "& > * + *": {
       marginTop: theme.spacing(2),
     },

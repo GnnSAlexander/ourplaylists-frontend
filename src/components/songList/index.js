@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core"
 import React from "react"
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever"
+import ourplaylist from "../../services/ourplaylist"
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -27,8 +28,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export const SongList = ({ songs }) => {
+export const SongList = ({ songs, reloadSongs }) => {
   const classes = useStyles()
+
+  const handleRemoveSong = (id) => {
+    ourplaylist
+      .deleteSong(id)
+      .then((res) => console.log(res))
+      .catch((error) => console.log(error))
+    reloadSongs({})
+  }
+
   return (
     <Grid container item md={12}>
       <Grid item md={12}>
@@ -37,7 +47,7 @@ export const SongList = ({ songs }) => {
       <Grid item md={12}>
         <List>
           {songs.map((song) => (
-            <ListItem button>
+            <ListItem button key={song.id}>
               <ListItemAvatar>
                 <Avatar
                   variant="square"
@@ -48,7 +58,11 @@ export const SongList = ({ songs }) => {
               </ListItemAvatar>
               <ListItemText>{song.title}</ListItemText>
               <ListItemSecondaryAction>
-                <IconButton aria-label="Play" color="secondary">
+                <IconButton
+                  aria-label="Play"
+                  color="secondary"
+                  onClick={() => handleRemoveSong(song.id)}
+                >
                   <DeleteForeverIcon fontSize="large" />
                 </IconButton>
               </ListItemSecondaryAction>

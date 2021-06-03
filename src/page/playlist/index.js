@@ -5,8 +5,8 @@ import { Loading } from "../../components/Loading"
 import usePlaylist from "../../hooks/usePlaylist"
 import playlist_default from "./playlist-default.jpeg"
 
-import QueueMusicIcon from "@material-ui/icons/QueueMusic"
 import { SongList } from "../../components/songList"
+import AddSong from "../../components/addSong"
 
 const useStyles = makeStyles({
   img: {
@@ -23,7 +23,7 @@ export const PlaylistPage = () => {
   const classes = useStyles()
   const params = useParams()
   const { id } = params
-  const { state } = usePlaylist({ id })
+  const { state, setRefetch } = usePlaylist({ id })
   const { data: playlist } = state
 
   if (state.loading) {
@@ -56,13 +56,11 @@ export const PlaylistPage = () => {
             <Typography variant="h2">{playlist.title}</Typography>
           </div>
           <div>
-            <IconButton aria-label="Add song" color="primary">
-              <QueueMusicIcon fontSize="large" color="secondary" />
-            </IconButton>
+            <AddSong playlist_title={playlist.title} reloadSongs={setRefetch} />
           </div>
         </Grid>
         <Grid container item md={10}>
-          <SongList songs={playlist.songs} />
+          <SongList songs={playlist.songs} reloadSongs={setRefetch} />
         </Grid>
       </Grid>
     )
