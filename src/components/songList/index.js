@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export const SongList = ({ songs, reloadSongs }) => {
+export const SongList = ({ songs, reloadSongs, watch, handleSelectSong }) => {
   const classes = useStyles()
 
   const handleRemoveSong = (id) => {
@@ -39,15 +39,25 @@ export const SongList = ({ songs, reloadSongs }) => {
     reloadSongs({})
   }
 
+  const selectSong = (song_id) => {
+    handleSelectSong(song_id)
+  }
+
   return (
     <Grid container item md={12}>
       <Grid item md={12}>
         <Typography variant="h4">Songs</Typography>
       </Grid>
       <Grid item md={12}>
-        <List>
+        <List button>
           {songs.map((song) => (
-            <ListItem button key={song.id}>
+            <ListItem
+              button
+              key={song.id}
+              onClick={() => {
+                watch && selectSong(song.song_id)
+              }}
+            >
               <ListItemAvatar>
                 <Avatar
                   variant="square"
@@ -58,13 +68,15 @@ export const SongList = ({ songs, reloadSongs }) => {
               </ListItemAvatar>
               <ListItemText>{song.title}</ListItemText>
               <ListItemSecondaryAction>
-                <IconButton
-                  aria-label="Play"
-                  color="secondary"
-                  onClick={() => handleRemoveSong(song.id)}
-                >
-                  <DeleteForeverIcon fontSize="large" />
-                </IconButton>
+                {!watch && (
+                  <IconButton
+                    aria-label="Play"
+                    color="secondary"
+                    onClick={() => handleRemoveSong(song.id)}
+                  >
+                    <DeleteForeverIcon fontSize="large" />
+                  </IconButton>
+                )}
               </ListItemSecondaryAction>
             </ListItem>
           ))}

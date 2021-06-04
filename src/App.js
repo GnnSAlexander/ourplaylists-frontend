@@ -10,6 +10,7 @@ import PrivateRoute from "./routes/PrivateRoute"
 import { Dashboard } from "./page/dashboard"
 import { PlaylistPage } from "./page/playlist"
 import { Header } from "./components/header"
+import { WatchPage } from "./page/watch"
 
 function App() {
   return (
@@ -20,6 +21,11 @@ function App() {
           <Switch>
             <PublicRoute exact path={ROUTES.HOME} component={Home} />
             <PublicRoute exact path={ROUTES.LOGIN} component={LoginPage} />
+            <PublicRoute
+              exact
+              path={ROUTES.WATCH + ":id"}
+              component={WatchPage}
+            />
             <PrivateRoute
               exact
               restricted

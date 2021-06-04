@@ -37,8 +37,8 @@ export const ListPlaylist = ({ listUpdated }) => {
     return <Loading />
   }
 
-  const navigate = (id) => {
-    history.push(ROUTES.PLAYLIST + id)
+  const navigate = (path, id) => {
+    history.push(path)
   }
 
   if (playlist) {
@@ -49,7 +49,7 @@ export const ListPlaylist = ({ listUpdated }) => {
             key={p.id}
             button
             onClick={() => {
-              navigate(p.id)
+              navigate(ROUTES.PLAYLIST + p.id)
             }}
           >
             <ListItemAvatar>
@@ -68,7 +68,11 @@ export const ListPlaylist = ({ listUpdated }) => {
               ).toLocaleDateString()}`}
             />
             <ListItemSecondaryAction>
-              <IconButton aria-label="Play" color="secondary">
+              <IconButton
+                aria-label="Play"
+                color="secondary"
+                onClick={() => navigate(ROUTES.WATCH + p.id)}
+              >
                 <PlaylistPlayIcon fontSize="large" />
               </IconButton>
             </ListItemSecondaryAction>
