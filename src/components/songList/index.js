@@ -26,9 +26,22 @@ const useStyles = makeStyles((theme) => ({
   padding: {
     marginLeft: 10,
   },
+  selected: {
+    backgroundColor: theme.palette.secondary.main,
+    "& .MuiTypography-body1": {
+      color: "white",
+      fontWeight: "bold",
+    },
+  },
 }))
 
-export const SongList = ({ songs, reloadSongs, watch, handleSelectSong }) => {
+export const SongList = ({
+  songs,
+  reloadSongs,
+  watch,
+  handleSelectSong,
+  songSelected,
+}) => {
   const classes = useStyles()
 
   const handleRemoveSong = (id) => {
@@ -50,36 +63,43 @@ export const SongList = ({ songs, reloadSongs, watch, handleSelectSong }) => {
       </Grid>
       <Grid item md={12}>
         <List button>
-          {songs.map((song) => (
-            <ListItem
-              button
-              key={song.id}
-              onClick={() => {
-                watch && selectSong(song.song_id)
-              }}
-            >
-              <ListItemAvatar>
-                <Avatar
-                  variant="square"
-                  className={classes.medium}
-                  alt={song.title}
-                  src={song.picture.length >= 20 ? song.picture : "default.png"}
-                />
-              </ListItemAvatar>
-              <ListItemText>{song.title}</ListItemText>
-              <ListItemSecondaryAction>
-                {!watch && (
-                  <IconButton
-                    aria-label="Play"
-                    color="secondary"
-                    onClick={() => handleRemoveSong(song.id)}
-                  >
-                    <DeleteForeverIcon fontSize="large" />
-                  </IconButton>
-                )}
-              </ListItemSecondaryAction>
-            </ListItem>
-          ))}
+          {songs.map((song) => {
+            const selected =
+              watch && songSelected?.id === song.id && classes.selected
+            return (
+              <ListItem
+                className={selected}
+                button
+                key={song.id}
+                onClick={() => {
+                  watch && selectSong(song.song_id)
+                }}
+              >
+                <ListItemAvatar>
+                  <Avatar
+                    variant="square"
+                    className={classes.medium}
+                    alt={song.title}
+                    src={
+                      song.picture.length >= 20 ? song.picture : "default.png"
+                    }
+                  />
+                </ListItemAvatar>
+                <ListItemText>{song.title}</ListItemText>
+                <ListItemSecondaryAction>
+                  {!watch && (
+                    <IconButton
+                      aria-label="Play"
+                      color="secondary"
+                      onClick={() => handleRemoveSong(song.id)}
+                    >
+                      <DeleteForeverIcon fontSize="large" />
+                    </IconButton>
+                  )}
+                </ListItemSecondaryAction>
+              </ListItem>
+            )
+          })}
         </List>
       </Grid>
     </Grid>

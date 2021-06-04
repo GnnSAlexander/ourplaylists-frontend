@@ -6,7 +6,7 @@ import {
   Menu,
   MenuItem,
 } from "@material-ui/core"
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext, useState } from "react"
 import { useHistory } from "react-router-dom"
 import useUser from "../../hooks/useUser"
 import ROUTES from "../../routes/ROUTES"
@@ -28,9 +28,6 @@ export const LoginButton = () => {
 
   const [open, setOpen] = useState(false)
   const history = useHistory()
-  useEffect(() => {
-    !isLogged && history.push(ROUTES.HOME)
-  }, [isLogged])
 
   const handleLogin = () => {
     history.push(ROUTES.LOGIN)

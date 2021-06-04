@@ -68,6 +68,7 @@ export const WatchPage = () => {
               songs={state.songs}
               watch
               handleSelectSong={setSongSelected}
+              songSelected={state.songSelected}
             />
           </Grid>
         </>

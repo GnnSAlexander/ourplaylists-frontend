@@ -1,5 +1,5 @@
 //import "./App.css"
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
+import { BrowserRouter as Router, Switch } from "react-router-dom"
 import { Home } from "./page/home"
 import { Video } from "./page/video"
 import LoginPage from "./page/login"
@@ -19,7 +19,6 @@ function App() {
         <div className="App">
           <Header />
           <Switch>
-            <PublicRoute exact path={ROUTES.HOME} component={Home} />
             <PublicRoute exact path={ROUTES.LOGIN} component={LoginPage} />
             <PublicRoute
               exact
@@ -38,6 +37,7 @@ function App() {
               path={ROUTES.PLAYLIST + ":id"}
               component={PlaylistPage}
             />
+            <PublicRoute exact path={ROUTES.HOME} component={Home} />
           </Switch>
         </div>
       </Router>
