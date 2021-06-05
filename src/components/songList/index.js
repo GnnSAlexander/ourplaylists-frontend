@@ -62,7 +62,7 @@ export const SongList = ({
         <Typography variant="h4">Songs</Typography>
       </Grid>
       <Grid item md={12}>
-        <List button>
+        <List>
           {songs.map((song) => {
             const selected =
               watch && songSelected?.id === song.id && classes.selected

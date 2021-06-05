@@ -1,16 +1,18 @@
 //import "./App.css"
 import { BrowserRouter as Router, Switch } from "react-router-dom"
-import { Home } from "./page/home"
-import { Video } from "./page/video"
-import LoginPage from "./page/login"
 import { UserContextProvider } from "./context/UserContext"
-import PublicRoute from "./routes/PublicRoute"
+
 import ROUTES from "./routes/ROUTES"
 import PrivateRoute from "./routes/PrivateRoute"
+import PublicRoute from "./routes/PublicRoute"
+import { Header } from "./components/header"
+
+import { Home } from "./page/home"
+import LoginPage from "./page/login"
 import { Dashboard } from "./page/dashboard"
 import { PlaylistPage } from "./page/playlist"
-import { Header } from "./components/header"
 import { WatchPage } from "./page/watch"
+import SignUpPage from "./page/signUp"
 
 function App() {
   return (
@@ -19,6 +21,7 @@ function App() {
         <div className="App">
           <Header />
           <Switch>
+            <PublicRoute exact path={ROUTES.SIGNUP} component={SignUpPage} />
             <PublicRoute exact path={ROUTES.LOGIN} component={LoginPage} />
             <PublicRoute
               exact

@@ -17,6 +17,7 @@ import useUser from "../../hooks/useUser"
 
 import { useSnackbar } from "notistack"
 import ROUTES from "../../routes/ROUTES"
+import ourplaylist from "../../services/ourplaylist"
 
 function Copyright() {
   return (
@@ -62,40 +63,19 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-  hide: {
-    display: "none",
-  },
 }))
 
-export default function LoginPage() {
+export default function SignUpPage() {
   const classes = useStyles()
   const [errors, setErrors] = useState({})
 
+  const name = useRef("")
   const username = useRef("")
   const password = useRef("")
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
-  const { error, isLogged, loading, login } = useUser()
-
   const history = useHistory()
-
-  useEffect(() => {
-    console.log(isLogged)
-    if (isLogged) {
-      enqueueSnackbar("success", {
-        variant: "success",
-      })
-      history.push("/dashboard")
-    }
-  }, [isLogged])
-
-  useEffect(() => {
-    error &&
-      enqueueSnackbar("wrong credentials", {
-        variant: "error",
-      })
-  }, [error])
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -114,10 +94,19 @@ export default function LoginPage() {
     setErrors(errors)
 
     if (Object.keys(errors).length === 0) {
-      login({
-        username: username.current.value,
-        password: password.current.value,
-      })
+      ourplaylist
+        .signUp({
+          name: name.current.value,
+          username: username.current.value,
+          password: password.current.value,
+        })
+        .then((res) => {
+          if (res?.error)
+            return enqueueSnackbar(res.error, { variant: "error" })
+          enqueueSnackbar("Account was created", { variant: "success" })
+          history.push(ROUTES.LOGIN)
+        })
+        .catch((error) => enqueueSnackbar(error, { variant: "error" }))
     }
   }
 
@@ -131,9 +120,20 @@ export default function LoginPage() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Sign Un
           </Typography>
           <form className={classes.form} noValidate onSubmit={handleSubmit}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              inputRef={name}
+              id="name"
+              label="Name"
+              name="name"
+              autoComplete="name"
+              autoFocus
+            />
             <TextField
               variant="outlined"
               margin="normal"
@@ -160,11 +160,7 @@ export default function LoginPage() {
               autoComplete="current-password"
               {...errors?.password}
             />
-            <FormControlLabel
-              className={classes.hide}
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
+
             <Button
               type="submit"
               fullWidth
@@ -172,17 +168,12 @@ export default function LoginPage() {
               color="primary"
               className={classes.submit}
             >
-              Sign In
+              Sign Up
             </Button>
             <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2" className={classes.hide}>
-                  Forgot password?
-                </Link>
-              </Grid>
               <Grid item>
-                <Link href={ROUTES.SIGNUP} variant="body2">
-                  {"Don't have an account? Sign Up"}
+                <Link href={ROUTES.LOGIN} variant="body2">
+                  {"Do have an account? Sign In"}
                 </Link>
               </Grid>
             </Grid>
